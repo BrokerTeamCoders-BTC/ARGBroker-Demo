@@ -1,7 +1,7 @@
 # Proyecto integrador: Modulo Programador 💻
 
 ## Integrantes del equipo "BrokerTeamCoders(BTC)📈":
-1. Carnero Penelas Denise
+1. Carnero Penelas Denise Leticia
 
 2. Bordón Ríos Matías León
 
