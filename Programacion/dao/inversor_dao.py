@@ -1,0 +1,1 @@
+# # Todo lo que tenga que ver con un inversor e involucre conexión a base de datos.

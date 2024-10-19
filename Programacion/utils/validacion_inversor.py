@@ -13,7 +13,7 @@ def validar_nombre(nombre):
     if nombre[0].isspace() or nombre[-1].isspace():
         return False, "No puede empezar ni terminar con un espacio.\n"
     
-    return True, "Es válido.\n"
+    return True, " "
 
 
 def validar_apellido(apellido):
@@ -37,14 +37,14 @@ def validar_cuil(cuil):
     if len(parte_inicial + numero_dni + digito_verificador) != 11:
         return False, "El CUIL debe tener un total de 11 dígitos.\n"
 
-    return True, "CUIL válido.\n"
+    return True, " "
 
 
 def validar_correo(correo):
     patron = r'^[a-zA-Z][a-zA-Z0-9_.+-]*@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
 
     if re.match(patron, correo):
-        return True, "Correo válido.\n"
+        return True, " "
     else:
         return False, "El correo no cumple con el formato.\n"
 
@@ -66,7 +66,7 @@ def validar_contraseña(contraseña):
     if not any(caracter in caracteres_especiales for caracter in contraseña):
         return False, "La contraseña debe contener al menos un carácter especial.\n"
     
-    return True, "La contraseña es válida.\n"
+    return True, " "
 
 
 def validar_datos():
