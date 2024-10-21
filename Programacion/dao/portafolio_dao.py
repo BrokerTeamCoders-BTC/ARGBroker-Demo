@@ -1,1 +1,18 @@
-#  Todo lo que tenga que ver con el portafolio e involucre conexión a base de datos.
+from models.portafolio import Portafolio
+
+class PortafolioDAO:
+ def __init__(self, db_conexion):
+    self.db = db_conexion
+
+
+def crear_portafolio(self, portafolio):
+    try:
+        with self.db.connection.cursor() as cursor:
+            sql = """INSERT INTO Portafolio (id_inversor, saldo, total_invertido, rendimiento)
+                        VALUES (%s, %s, %s, %s)"""
+            values = (portafolio.get_id_inversor(), portafolio.get_saldo(), portafolio.get_total_invertido(), portafolio.get_rendimiento())
+            cursor.execute(sql, values)
+            self.db.connection.commit()
+    except Exception as e:
+        print(f"Error al crear portafolio: {e}")
+        self.db.connection.rollback()
