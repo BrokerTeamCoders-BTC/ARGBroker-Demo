@@ -16,3 +16,16 @@ class PortafolioDAO:
         except Exception as e:
             print(f"Error al crear portafolio: {e}")
             self.db.conexion.rollback()
+
+    def obtener_portafolio(self, id_inversor):
+        try:
+            with self.db.conexion.cursor() as cursor:
+                sql = "SELECT * FROM Portafolio WHERE id_inversor = %s"
+                cursor.execute(sql, (id_inversor,))
+                portafolio = cursor.fetchone()
+            if portafolio:
+                return Portafolio(*portafolio)
+            return None
+        except Exception as e:
+            print(f"Error al obtener portafolio: {e}")
+            return None
