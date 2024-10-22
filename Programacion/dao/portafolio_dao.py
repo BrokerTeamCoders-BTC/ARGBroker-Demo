@@ -29,3 +29,19 @@ class PortafolioDAO:
         except Exception as e:
             print(f"Error al obtener portafolio: {e}")
             return None
+
+        def obtener_activos_portafolio(self, id_portafolio):
+        try:
+            with self.db.conexion.cursor(dictionary=True) as cursor:
+                sql = """
+                        SELECT a.id_accion, a.simbolo, a.nombre_empresa, pa.cantidad, a.precio_venta, a.precio_compra
+                        FROM PortafolioAccion pa
+                        JOIN Accion a ON pa.id_accion = a.id_accion
+                        WHERE pa.id_portafolio = %s;
+                        """
+                cursor.execute(sql, (id_portafolio,))
+                activos = cursor.fetchall()
+            return activos
+        except Exception as e:
+            print(f"Error al obtener los activos en portafolio: {e}")
+            return None
