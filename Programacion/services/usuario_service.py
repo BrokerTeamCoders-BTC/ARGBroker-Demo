@@ -16,3 +16,6 @@ class UsuarioService:
         nuevo_portafolio = Portafolio(id_portafolio=None, id_inversor=id_inversor, saldo=1000000.0, total_invertido=0, rendimiento=0)
         self.portafolio_dao.crear_portafolio(nuevo_portafolio)
 
+    def iniciar_sesion(self, correo, contrasenia):
+            inversor = self.inversor_dao.obtener_inversor_por_correo_y_contrasenia(correo, contrasenia)
+            return inversor
