@@ -1,6 +1,5 @@
 from models.inversor import Inversor
 
-
 class InversorDAO:
     def __init__(self, db_conexion):
         self.db = db_conexion
@@ -19,4 +18,17 @@ class InversorDAO:
         except Exception as e:
             print(f"Error al crear el inversor: {e}")
             self.db.connection.rollback()
+            return None
+
+    def obtener_inversor_por_correo_y_contrasenia(self, correo, contrasenia):
+        try:
+            with self.db.connection.cursor() as cursor:
+                sql = "SELECT * FROM Inversor WHERE correo = %s and contrasenia = %s"
+                cursor.execute(sql, (correo, contrasenia))
+                inversor = cursor.fetchone()
+            if inversor:
+                return Inversor(*inversor)
+            return None
+        except Exception as e:
+            print(f"Error al obtener inversor por correo y contraseña: {e}")
             return None
