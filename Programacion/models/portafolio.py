@@ -23,3 +23,13 @@ class Portafolio:
    
     def get_rendimiento(self):
         return self.__rendimiento
+
+#setters necesarios
+    def set_saldo(self, nuevo_saldo):
+        self.__saldo = nuevo_saldo
+
+    def set_total_invertido(self, nuevo_total_invertido):
+        self.__total_invertido = nuevo_total_invertido
+
+    def set_rendimiento(self, nuevo_rendimiento):
+        self.__rendimiento = nuevo_rendimiento
