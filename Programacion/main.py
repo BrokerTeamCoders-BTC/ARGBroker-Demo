@@ -1,6 +1,6 @@
-from database.database import ConexionBaseDeDatos
-from services.usuario_service import UsuarioService
-from utils.validacion_inversor import validar_datos
+from Programacion.database.database import ConexionBaseDeDatos
+from Programacion.services.usuario_service import UsuarioService
+from Programacion.utils.validacion_inversor import validar_datos
 
 def mostrar_menu_principal():
     print("\n1. Ver datos de la cuenta")
@@ -43,6 +43,8 @@ def main():
                     opcion_menu = input("\nSeleccione una opción: ")
                     
                     if opcion_menu == "1":
+                        datos_cuenta = usuario_service.obtener_datos_cuenta()
+                        print(f"\nLos datos de su cuenta son: {datos_cuenta}")
                         pass
 
                     elif opcion_menu == "2":

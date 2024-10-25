@@ -1,4 +1,4 @@
-from models.inversor import Inversor
+from Programacion.models.inversor import Inversor
 
 class InversorDAO:
     def __init__(self, db_conexion):

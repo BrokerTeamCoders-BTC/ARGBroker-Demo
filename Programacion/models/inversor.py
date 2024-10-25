@@ -25,3 +25,12 @@ class Inversor:
     def get_contrasenia(self):
         return self.__contrasenia
     
+
+    def get_datos_cuenta(self):
+        inversor = {
+            "id_inversor": self.__id_inversor,
+            "nombre": self.__nombre,
+            "apellido": self.__apellido,
+            "cuil": self.__cuil,
+            "correo": self.__correo,
+        }

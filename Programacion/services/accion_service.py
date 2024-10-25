@@ -41,7 +41,7 @@
 # # Ejemplo de uso
 # vender_accion(1, 101, 10)  # Vende 10 acciones con id 101 del portafolio con id 1
 
-from dao.accion_dao import AccionDAO
+from Programacion.dao.accion_dao import AccionDAO
 
 class AccionService:
     def __init__(self, db_conexion):

@@ -1,6 +1,6 @@
 # Lógica relacionada al portafolio.
-from dao.portafolio_dao import PortafolioDAO
-from dao.accion_dao import AccionDAO
+from Programacion.dao.portafolio_dao import PortafolioDAO
+from Programacion.dao.accion_dao import AccionDAO
 
 
 class PortafolioService:
