@@ -12,13 +12,34 @@ class OperacionService:
 
 
     def realizar_compra(self, id_inversor, id_accion, cantidad):
+        # Obtener el portafolio y la acción
         portafolio = self.portafolio_dao.obtener_portafolio(id_inversor)
         accion = self.accion_dao.obtener_accion(id_accion)
-       
+
+        # Crear la operación de compra
         operacion = self._crear_operacion_compra(portafolio, accion, cantidad)
-       
+
+        # Validar que hay saldo suficiente
         self._validar_saldo_suficiente(portafolio, operacion)
 
+        # Registrar la operación en la base de datos
+        self.operacion_dao.registrar_operacion(
+            id_portafolio=operacion["id_portafolio"],
+            id_tipo=operacion["id_tipo"],
+            id_accion=operacion["id_accion"],
+            fecha_operacion=operacion["fecha_operacion"],
+            precio=operacion["precio"],
+            cantidad=operacion["cantidad"],
+            total_accion=operacion["total_accion"],
+            comision=operacion["comision"]
+        )
+        cantidad_acciones_anterior= self.portafolio_dao.obtener_cantidad_acciones(operacion["id_portafolio"], operacion["id_accion"])
+        if cantidad_acciones_anterior:
+            nueva_cantidad = cantidad_acciones_anterior + cantidad
+            self.portafolio_dao.actualizar_portafolio_accion(operacion["id_portafolio"], operacion["id_accion"], nueva_cantidad)
+        else:
+            self.portafolio_dao.insertar_portafolio_accion(operacion["id_portafolio"], operacion["id_accion"], cantidad)
+            
     def _crear_operacion_compra(self, portafolio, accion, cantidad):
         costo_total = accion.get_precio_compra() * cantidad
         comision = costo_total * 0.015

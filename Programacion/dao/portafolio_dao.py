@@ -49,7 +49,7 @@ class PortafolioDAO:
 
     def obtener_cantidad_acciones(self, id_portafolio, id_accion):
         try:
-            with self.db.connection.cursor() as cursor:
+            with self.db.conexion.cursor() as cursor:
                 sql = "SELECT cantidad FROM PortafolioAccion WHERE id_portafolio = %s AND id_accion = %s"
                 cursor.execute(sql, (id_portafolio, id_accion))
                 cantidad = cursor.fetchone()
@@ -61,9 +61,9 @@ class PortafolioDAO:
 
     def obtener_portafolio_accion(self, id_portafolio, id_accion):
         try:
-            with self.db.connection.cursor() as cursor:
+            with self.db.conexion.cursor() as cursor:
                 sql = """
-                SELECT * FROM portafolioaccion
+                SELECT * FROM PortafolioAccion
                 WHERE id_portafolio = %s AND id_accion = %s
                 """
                 cursor.execute(sql, (id_portafolio, id_accion))
@@ -76,29 +76,29 @@ class PortafolioDAO:
 
     def insertar_portafolio_accion(self, id_portafolio, id_accion, cantidad):
         try:
-            with self.db.connection.cursor() as cursor:
+            with self.db.conexion.cursor() as cursor:
                 sql = """
-                INSERT INTO portafolioaccion (id_portafolio, id_accion, cantidad)
+                INSERT INTO PortafolioAccion (id_portafolio, id_accion, cantidad)
                 VALUES (%s, %s, %s)
                 """
                 cursor.execute(sql, (id_portafolio, id_accion, cantidad))
-                self.db.connection.commit()
+                self.db.conexion.commit()
         except Exception as e:
             print(f"Error al insertar datos en tabla PortafolioAccion: {e}")
-            self.db.connection.rollback()
+            self.db.conexion.rollback()
 
 
     def actualizar_portafolio_accion(self, id_portafolio, id_accion, nueva_cantidad):
         try:
-            with self.db.connection.cursor() as cursor:
+            with self.db.conexion.cursor() as cursor:
                 sql = """
-                UPDATE portafolioaccion
+                UPDATE PortafolioAccion
                 SET cantidad = %s
                 WHERE id_portafolio = %s AND id_accion = %s
                 """
                 cursor.execute(sql, (nueva_cantidad, id_portafolio, id_accion))
-                self.db.connection.commit()
+                self.db.conexion.commit()
         except Exception as e:
             print(f"Error al actualizar la tabla PortafolioAccion: {e}")
-            self.db.connection.rollback()
+            self.db.conexion.rollback()
             

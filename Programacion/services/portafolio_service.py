@@ -14,7 +14,6 @@ class PortafolioService:
         activos = self.portafolio_dao.obtener_activos_portafolio(portafolio.get_id_portafolio())
         resultados = []
 
-
         for activo in activos:
 
             cantidad = activo['cantidad']

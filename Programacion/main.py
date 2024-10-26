@@ -1,6 +1,8 @@
 from Programacion.database.database import ConexionBaseDeDatos
 from Programacion.services.usuario_service import UsuarioService
 from Programacion.services.portafolio_service import PortafolioService
+from Programacion.services.operacion_service import OperacionService
+from Programacion.services.accion_service import AccionService
 from Programacion.utils.validacion_inversor import validar_datos
 
 def mostrar_menu_principal():
@@ -17,6 +19,10 @@ def main():
     usuario_service = UsuarioService(db)
     
     portafolio_service = PortafolioService(db)
+
+    operacion_service = OperacionService(db)
+
+    accion_service = AccionService(db)
 
 
     print("\n------------ BIENVENIDO A ARGBROKER ------------")
@@ -62,20 +68,39 @@ def main():
                         # Mostrar activos del portafolio
                         if activos:
                             print("\nActivos en el portafolio:")
-                        for activo in activos:
-                            print(f"ID Acción: {activo['id_accion']}")
-                            print(f"Nombre Empresa: {activo['nombre_empresa']}")
-                            print(f"Símbolo: {activo['simbolo']}")
-                            print(f"Cantidad: {activo['cantidad']}")
-                            print(f"Precio Compra: {activo['precio_compra']}")
-                            print(f"Precio Actual: {activo['precio_actual']}")
-                            print(f"Valor Total: {activo['valor_total']}")
-                            print(f"Rendimiento: {activo['rendimiento']}%\n")
+                            for activo in activos:
+                                print(f"ID Acción: {activo['id_accion']}")
+                                print(f"Nombre Empresa: {activo['nombre_empresa']}")
+                                print(f"Símbolo: {activo['simbolo']}")
+                                print(f"Cantidad: {activo['cantidad']}")
+                                print(f"Precio Compra: {activo['precio_compra']}")
+                                print(f"Precio Actual: {activo['precio_actual']}")
+                                print(f"Valor Total: {activo['valor_total']}")
+                                print(f"Rendimiento: {activo['rendimiento']}%\n")
                         else:
                             print("No se encontraron activos en el portafolio.")
                         pass
                     
                     elif opcion_menu == "3":
+                        # Listar las acciones disponibles para la compra
+                        acciones = accion_service.armar_listado_acciones()
+                        if acciones:
+                            print("\nAcciones disponibles:")
+                            for accion in acciones:
+                                print(f"ID: {accion['id_accion']}, Nombre: {accion['nombre_empresa']}, Precio: {accion['precio_compra']}")
+
+                            id_accion = input("\nIngrese el ID de la acción que desea comprar: ")
+                            cantidad = int(input("Ingrese la cantidad de acciones a comprar: "))
+
+                            try:
+                                id_inversor = usuario_service.usuario.get_id_inversor()  # Obtener ID del inversor logueado
+                                operacion_service.realizar_compra(id_inversor, id_accion, cantidad)  # Ejecutar la compra
+                                print("Compra realizada con éxito.")
+                            except ValueError as e:
+                                print(f"Error en la compra: {e}")
+
+                        else:
+                            print("No hay acciones disponibles para comprar.")
                         pass
                     
                     elif opcion_menu == "4":
