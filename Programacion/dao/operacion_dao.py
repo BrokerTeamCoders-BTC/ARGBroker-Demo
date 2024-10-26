@@ -4,19 +4,19 @@ class OperacionDAO:
 
     def registrar_operacion(self, id_portafolio, id_tipo, id_accion, fecha_operacion, precio, cantidad, total_accion, comision):
         try:
-            with self.db.connection.cursor() as cursor:
+            with self.db.conexion.cursor() as cursor: 
                 sql = """INSERT INTO Operacion (id_portafolio, id_tipo, id_accion, fecha_operacion, precio, cantidad, total_accion, comision)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
+                          VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
                 values = (id_portafolio, id_tipo, id_accion, fecha_operacion, precio, cantidad, total_accion, comision)
                 cursor.execute(sql, values)
-                self.db.connection.commit()
+                self.db.conexion.commit()  
         except Exception as e:
             print(f"Error al registrar operación: {e}")
-            self.db.connection.rollback()
+        self.db.conexion.rollback()
 
     def obtener_operaciones_accion(self, id_portafolio, id_accion):
         try:
-            with self.db.connection.cursor(dictionary=True) as cursor: #Para devolver como diccionario
+            with self.db.connection.cursor(dictionary=True) as cursor: 
                 sql = """
                 SELECT *
                 FROM Operacion
