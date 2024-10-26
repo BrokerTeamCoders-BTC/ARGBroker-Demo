@@ -15,7 +15,7 @@ class UsuarioService:
     # Creación del portafolio para el nuevo inversor.
         nuevo_portafolio = Portafolio(id_portafolio=None, id_inversor=id_inversor, saldo=1000000.0, total_invertido=0, rendimiento=0)
         self.portafolio_dao.crear_portafolio(nuevo_portafolio)
-        self.usuario = Inversor.get_datos_cuenta()
+        self.usuario = nuevo_inversor.get_datos_cuenta()
 
     def iniciar_sesion(self, correo, contrasenia):
             inversor = self.inversor_dao.obtener_inversor_por_correo_y_contrasenia(correo, contrasenia)
@@ -23,4 +23,5 @@ class UsuarioService:
             return inversor
     
     def obtener_datos_cuenta(self):
-            return self.usuario
+            return str(self.usuario) if self.usuario else "No hay datos de usuario disponibles."
+

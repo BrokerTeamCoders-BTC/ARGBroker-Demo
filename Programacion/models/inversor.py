@@ -7,6 +7,9 @@ class Inversor:
         self.__correo = correo
         self.__contrasenia = contrasenia 
 
+    def __str__(self):
+        return f"Inversor(ID: {self.__id_inversor}, Nombre: {self.__nombre}, Apellido: {self.__apellido}, CUIL: {self.__cuil}, Correo: {self.__correo})"
+    
     def get_id_inversor(self):
         return self.__id_inversor
    
@@ -25,7 +28,7 @@ class Inversor:
     def get_contrasenia(self):
         return self.__contrasenia
     
-
+    
     def get_datos_cuenta(self):
         inversor = {
             "id_inversor": self.__id_inversor,
