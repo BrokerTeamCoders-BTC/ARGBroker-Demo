@@ -16,7 +16,7 @@ class OperacionDAO:
 
     def obtener_operaciones_accion(self, id_portafolio, id_accion):
         try:
-            with self.db.connection.cursor(dictionary=True) as cursor: 
+            with self.db.conexion.cursor(dictionary=True) as cursor: 
                 sql = """
                 SELECT *
                 FROM Operacion
