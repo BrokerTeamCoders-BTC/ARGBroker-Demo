@@ -1,4 +1,4 @@
-from models.accion import Accion
+from Programacion.models.accion import Accion
 
 
 class AccionDAO:
@@ -17,4 +17,15 @@ class AccionDAO:
             return None
         except Exception as e:
             print(f"Error al obtener la acción: {e}")
+            return None
+
+    def listar_acciones(self):
+        try:
+            with self.db.conexion.cursor() as cursor:
+                sql = "SELECT * FROM Accion"
+                cursor.execute(sql)
+                acciones = cursor.fetchall()
+            return acciones
+        except Exception as e:
+            print(f"Error al listar acciones: {e}")
             return None

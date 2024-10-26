@@ -1,6 +1,6 @@
-from dao.operacion_dao import OperacionDAO
-from dao.portafolio_dao import PortafolioDAO
-from dao.accion_dao import AccionDAO
+from Programacion.dao.operacion_dao import OperacionDAO
+from Programacion.dao.portafolio_dao import PortafolioDAO
+from Programacion.dao.accion_dao import AccionDAO
 from datetime import date
 
 

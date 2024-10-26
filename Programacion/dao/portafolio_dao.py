@@ -1,4 +1,4 @@
-from models.portafolio import Portafolio
+from Programacion.models.portafolio import Portafolio
 
 class PortafolioDAO:
     def __init__(self, db_conexion):
