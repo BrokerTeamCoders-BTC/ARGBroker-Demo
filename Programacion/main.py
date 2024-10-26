@@ -1,5 +1,6 @@
 from Programacion.database.database import ConexionBaseDeDatos
 from Programacion.services.usuario_service import UsuarioService
+from Programacion.services.portafolio_service import PortafolioService
 from Programacion.utils.validacion_inversor import validar_datos
 
 def mostrar_menu_principal():
@@ -15,6 +16,8 @@ def main():
 
     usuario_service = UsuarioService(db)
     
+    portafolio_service = PortafolioService(db)
+
 
     print("\n------------ BIENVENIDO A ARGBROKER ------------")
 
@@ -48,6 +51,28 @@ def main():
                         pass
 
                     elif opcion_menu == "2":
+                         # Verifica si el usuario ha iniciado sesión
+                        if not usuario_service.usuario:
+                            print("Debe iniciar sesión primero.")
+                        else:
+                        # Utiliza el id del inversor logueado
+                            id_inversor = usuario_service.usuario.get_id_inversor()
+                            activos = portafolio_service.listar_activos(id_inversor)
+                
+                        # Mostrar activos del portafolio
+                        if activos:
+                            print("\nActivos en el portafolio:")
+                        for activo in activos:
+                            print(f"ID Acción: {activo['id_accion']}")
+                            print(f"Nombre Empresa: {activo['nombre_empresa']}")
+                            print(f"Símbolo: {activo['simbolo']}")
+                            print(f"Cantidad: {activo['cantidad']}")
+                            print(f"Precio Compra: {activo['precio_compra']}")
+                            print(f"Precio Actual: {activo['precio_actual']}")
+                            print(f"Valor Total: {activo['valor_total']}")
+                            print(f"Rendimiento: {activo['rendimiento']}%\n")
+                        else:
+                            print("No se encontraron activos en el portafolio.")
                         pass
                     
                     elif opcion_menu == "3":
