@@ -104,6 +104,28 @@ def main():
                         pass
                     
                     elif opcion_menu == "4":
+                        # Verifica si el usuario ha iniciado sesión
+                        if not usuario_service.usuario:
+                            print("Debe iniciar sesión primero.")
+                        else:
+                        # Utiliza el id del inversor logueado
+                            id_inversor = usuario_service.usuario.get_id_inversor()
+                            activos = portafolio_service.listar_activos(id_inversor)
+                
+                        # Mostrar activos del portafolio
+                        if activos:
+                            print("\nActivos en el portafolio:")
+                            for accion in activos:
+                                print(f"ID: {accion['id_accion']}, Nombre: {accion['nombre_empresa']}, Precio_venta: {accion['precio_actual']}, Precio_compra: {accion['precio_compra']}, Cantidad: {accion['cantidad']}, Total_en_cartera: {accion['valor_total']}")   
+                        else:
+                            print("No se encontraron activos en el portafolio.")
+                        id_accion = input("\nIngrese el ID de la acción que desea vender: ")
+                        cantidad = int(input("Ingrese la cantidad de acciones a vender: "))
+                        try: 
+                            operacion_service.realizar_venta(id_inversor, id_accion, cantidad)
+                            print("Venta realizada con exito: ")
+                        except Exception as e:
+                            print(f"Error en la venta: {e}")
                         pass
 
                     elif opcion_menu == "5":

@@ -111,7 +111,7 @@ class OperacionService:
 
         portafolio.set_saldo(nuevo_saldo)
         portafolio.set_total_invertido(nuevo_total_invertido)
-        self.portafolio_dao.actualizar_portafolio(portafolio)
+        # self.portafolio_dao.actualizar_portafolio(portafolio)
 
 
     def _actualizar_cantidad_acciones(self, id_portafolio, id_accion, cantidad):
