@@ -1,7 +1,7 @@
-from Programacion.dao.inversor_dao import InversorDAO
-from Programacion.models.inversor import Inversor
-from Programacion.dao.portafolio_dao import PortafolioDAO
-from Programacion.models.portafolio import Portafolio
+from dao.inversor_dao import InversorDAO
+from models.inversor import Inversor
+from dao.portafolio_dao import PortafolioDAO
+from models.portafolio import Portafolio
 		
 class UsuarioService:
     def __init__(self, db_conexion):

@@ -1,4 +1,4 @@
-from Programacion.models.portafolio import Portafolio
+from models.portafolio import Portafolio
 
 class PortafolioDAO:
     def __init__(self, db_conexion):
@@ -29,6 +29,21 @@ class PortafolioDAO:
         except Exception as e:
             print(f"Error al obtener portafolio: {e}")
             return None
+        
+        
+    def actualizar_portafolio(self, portafolio):
+        try:
+            with self.db.conexion.cursor() as cursor:
+                sql = """UPDATE Portafolio 
+                        SET saldo = %s, total_invertido = %s, rendimiento = %s 
+                        WHERE id_portafolio = %s"""
+                values = (portafolio.get_saldo(), portafolio.get_total_invertido(), portafolio.get_rendimiento(), portafolio.get_id_portafolio())
+                cursor.execute(sql, values)
+                self.db.conexion.commit()
+        except Exception as e:
+            print(f"Error al actualizar el portafolio: {e}")
+            self.db.conexion.rollback()
+
 
     def obtener_activos_portafolio(self, id_portafolio):
         try:

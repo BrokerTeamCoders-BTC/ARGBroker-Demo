@@ -8,8 +8,8 @@ class Inversor:
         self.__contrasenia = contrasenia 
 
     def __str__(self):
-        return f"Inversor(ID: {self.__id_inversor}, Nombre: {self.__nombre}, Apellido: {self.__apellido}, CUIL: {self.__cuil}, Correo: {self.__correo})"
-    
+        return f"ID: {self.__id_inversor}\n Nombre: {self.__nombre}\n Apellido: {self.__apellido}\n CUIL: {self.__cuil}\n Correo: {self.__correo}\n"
+
     def get_id_inversor(self):
         return self.__id_inversor
    

@@ -1,6 +1,6 @@
-from Programacion.dao.operacion_dao import OperacionDAO
-from Programacion.dao.portafolio_dao import PortafolioDAO
-from Programacion.dao.accion_dao import AccionDAO
+from dao.operacion_dao import OperacionDAO
+from dao.portafolio_dao import PortafolioDAO
+from dao.accion_dao import AccionDAO
 from datetime import date
 
 
@@ -21,24 +21,8 @@ class OperacionService:
 
         # Validar que hay saldo suficiente
         self._validar_saldo_suficiente(portafolio, operacion)
+        self._ejecutar_operacion(operacion, portafolio, cantidad)
 
-        # Registrar la operación en la base de datos
-        self.operacion_dao.registrar_operacion(
-            id_portafolio=operacion["id_portafolio"],
-            id_tipo=operacion["id_tipo"],
-            id_accion=operacion["id_accion"],
-            fecha_operacion=operacion["fecha_operacion"],
-            precio=operacion["precio"],
-            cantidad=operacion["cantidad"],
-            total_accion=operacion["total_accion"],
-            comision=operacion["comision"]
-        )
-        cantidad_acciones_anterior= self.portafolio_dao.obtener_cantidad_acciones(operacion["id_portafolio"], operacion["id_accion"])
-        if cantidad_acciones_anterior:
-            nueva_cantidad = cantidad_acciones_anterior + cantidad
-            self.portafolio_dao.actualizar_portafolio_accion(operacion["id_portafolio"], operacion["id_accion"], nueva_cantidad)
-        else:
-            self.portafolio_dao.insertar_portafolio_accion(operacion["id_portafolio"], operacion["id_accion"], cantidad)
             
     def _crear_operacion_compra(self, portafolio, accion, cantidad):
         costo_total = accion.get_precio_compra() * cantidad
@@ -111,7 +95,7 @@ class OperacionService:
 
         portafolio.set_saldo(nuevo_saldo)
         portafolio.set_total_invertido(nuevo_total_invertido)
-        # self.portafolio_dao.actualizar_portafolio(portafolio)
+        self.portafolio_dao.actualizar_portafolio(portafolio)
 
 
     def _actualizar_cantidad_acciones(self, id_portafolio, id_accion, cantidad):

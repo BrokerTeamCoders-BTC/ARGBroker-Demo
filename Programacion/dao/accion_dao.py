@@ -1,4 +1,4 @@
-from Programacion.models.accion import Accion
+from models.accion import Accion
 
 
 class AccionDAO:

@@ -1,9 +1,9 @@
-from Programacion.database.database import ConexionBaseDeDatos
-from Programacion.services.usuario_service import UsuarioService
-from Programacion.services.portafolio_service import PortafolioService
-from Programacion.services.operacion_service import OperacionService
-from Programacion.services.accion_service import AccionService
-from Programacion.utils.validacion_inversor import validar_datos
+from database.database import ConexionBaseDeDatos
+from services.usuario_service import UsuarioService
+from services.portafolio_service import PortafolioService
+from services.operacion_service import OperacionService
+from services.accion_service import AccionService
+from utils.validacion_inversor import validar_datos
 
 def mostrar_menu_principal():
     print("\n1. Ver datos de la cuenta")
@@ -44,7 +44,7 @@ def main():
             inversor = usuario_service.iniciar_sesion(correo, contrasenia)
             
             if inversor:
-                print(f"\n\n¡Bienvenido, {inversor.get_nombre()}!\n\n")
+                print(f"\n\n¡Bienvenido, {inversor.get_nombre()}!\n")
                 
                 
                 while True:
@@ -52,9 +52,14 @@ def main():
                     opcion_menu = input("\nSeleccione una opción: ")
                     
                     if opcion_menu == "1":
-                        datos_cuenta = usuario_service.obtener_datos_cuenta()
-                        print(f"\nLos datos de su cuenta son: {datos_cuenta}")
-                        pass
+                        datos_usuario = usuario_service.obtener_datos_cuenta()
+                        datos_cuenta = portafolio_service.obtener_datos_cuenta(inversor.get_id_inversor())
+
+                        print(f"\nLos datos de su cuenta son: \n\n {datos_usuario}")
+                        print(f"\nSaldo: {datos_cuenta['saldo']}")
+                        print(f"Total invertido: {datos_cuenta['total_invertido']}")
+                        print(f"Valor actual: {datos_cuenta['valor_total_actual']}")
+                        print(f"Rendimiento: {datos_cuenta['rendimiento_total']}")
 
                     elif opcion_menu == "2":
                          # Verifica si el usuario ha iniciado sesión
@@ -69,7 +74,7 @@ def main():
                         if activos:
                             print("\nActivos en el portafolio:")
                             for activo in activos:
-                                print(f"ID Acción: {activo['id_accion']}")
+                                print(f"\nID Acción: {activo['id_accion']}")
                                 print(f"Nombre Empresa: {activo['nombre_empresa']}")
                                 print(f"Símbolo: {activo['simbolo']}")
                                 print(f"Cantidad: {activo['cantidad']}")
@@ -77,6 +82,7 @@ def main():
                                 print(f"Precio Actual: {activo['precio_actual']}")
                                 print(f"Valor Total: {activo['valor_total']}")
                                 print(f"Rendimiento: {activo['rendimiento']}%\n")
+                                print("----------------------------------------------")
                         else:
                             print("No se encontraron activos en el portafolio.")
                         pass
@@ -116,7 +122,7 @@ def main():
                         if activos:
                             print("\nActivos en el portafolio:")
                             for accion in activos:
-                                print(f"ID: {accion['id_accion']}, Nombre: {accion['nombre_empresa']}, Precio_venta: {accion['precio_actual']}, Precio_compra: {accion['precio_compra']}, Cantidad: {accion['cantidad']}, Total_en_cartera: {accion['valor_total']}")   
+                                print(f"ID: {accion['id_accion']}, Nombre: {accion['nombre_empresa']}, Precio venta actual: {accion['precio_actual']}, Rendimiento: {accion['rendimiento']}%, Cantidad de acciones: {accion['cantidad']}, Total en cartera: {accion['valor_total']}")   
                         else:
                             print("No se encontraron activos en el portafolio.")
                         id_accion = input("\nIngrese el ID de la acción que desea vender: ")
