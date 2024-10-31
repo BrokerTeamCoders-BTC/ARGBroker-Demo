@@ -14,16 +14,16 @@ class OperacionDAO:
             print(f"Error al registrar operación: {e}")
         self.db.conexion.rollback()
 
-    def obtener_operaciones_accion(self, id_portafolio, id_accion):
+    def obtener_operaciones_accion(self, id_portafolio, id_accion, fecha_desde):
         try:
             with self.db.conexion.cursor(dictionary=True) as cursor: 
                 sql = """
                 SELECT *
                 FROM Operacion
-                WHERE id_portafolio = %s AND id_accion = %s
+                WHERE id_portafolio = %s AND id_accion = %s AND fecha_operacion >= %s
                 ORDER BY fecha_operacion
                 """
-                cursor.execute(sql, (id_portafolio, id_accion))
+                cursor.execute(sql, (id_portafolio, id_accion, fecha_desde))
                 operaciones = cursor.fetchall()
             return [
                 {**op, 'tipo': 'compra' if op['id_tipo'] == 1 else 'venta'}

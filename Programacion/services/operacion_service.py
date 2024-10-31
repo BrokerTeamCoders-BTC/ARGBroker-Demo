@@ -1,7 +1,7 @@
 from dao.operacion_dao import OperacionDAO
 from dao.portafolio_dao import PortafolioDAO
 from dao.accion_dao import AccionDAO
-from datetime import date
+from datetime import datetime
 
 
 class OperacionService:
@@ -31,7 +31,7 @@ class OperacionService:
             "id_portafolio": portafolio.get_id_portafolio(),
             "id_tipo": 1,
             "id_accion": accion.get_id_accion(),
-            "fecha_operacion": date.today(),
+            "fecha_operacion": datetime.now(),
             "precio": accion.get_precio_compra(),
             "cantidad": cantidad,
             "total_accion": costo_total,
@@ -61,7 +61,7 @@ class OperacionService:
             "id_portafolio": portafolio.get_id_portafolio(),
             "id_tipo": 2,
             "id_accion": accion.get_id_accion(),
-            "fecha_operacion": date.today(),
+            "fecha_operacion": datetime.now(),
             "precio": accion.get_precio_venta(),
             "cantidad": cantidad,
             "total_accion": valor_venta,
@@ -77,7 +77,7 @@ class OperacionService:
     def _ejecutar_operacion(self, operacion, portafolio, cambio_cantidad):
         self._registrar_operacion(operacion)
         self._actualizar_portafolio(operacion, portafolio)
-        self._actualizar_cantidad_acciones(portafolio.get_id_portafolio(), operacion["id_accion"], cambio_cantidad)
+        self._actualizar_cantidad_acciones(portafolio.get_id_portafolio(), operacion["id_accion"], cambio_cantidad, operacion)
 
 
     def _registrar_operacion(self, operacion):
@@ -89,8 +89,9 @@ class OperacionService:
             nuevo_saldo = portafolio.get_saldo() - (operacion["total_accion"] + operacion["comision"])
             nuevo_total_invertido = portafolio.get_total_invertido() + operacion["total_accion"]
         else:  # Venta
+            portafolio_accion = self.portafolio_dao.obtener_portafolio_accion(portafolio.get_id_portafolio(), operacion["id_accion"])
             nuevo_saldo = portafolio.get_saldo() + (operacion["total_accion"] - operacion["comision"])
-            costo_promedio = self._calcular_costo_promedio(portafolio.get_id_portafolio(), operacion["id_accion"])
+            costo_promedio = self._calcular_costo_promedio(portafolio.get_id_portafolio(), operacion["id_accion"], portafolio_accion["primera_operacion"])
             nuevo_total_invertido = portafolio.get_total_invertido() - (costo_promedio * operacion["cantidad"])
 
         portafolio.set_saldo(nuevo_saldo)
@@ -98,19 +99,24 @@ class OperacionService:
         self.portafolio_dao.actualizar_portafolio(portafolio)
 
 
-    def _actualizar_cantidad_acciones(self, id_portafolio, id_accion, cantidad):
+    def _actualizar_cantidad_acciones(self, id_portafolio, id_accion, cantidad, operacion):
         cantidad_actual = self.portafolio_dao.obtener_cantidad_acciones(id_portafolio, id_accion)
         nueva_cantidad = cantidad_actual + cantidad
         portafolio_accion = self.portafolio_dao.obtener_portafolio_accion(id_portafolio, id_accion)
-
+        precio_promedio = self._calcular_costo_promedio(id_portafolio, id_accion, portafolio_accion["primera_operacion"] if portafolio_accion else str(datetime.now()))
+        
+        
         if portafolio_accion:
-            self.portafolio_dao.actualizar_portafolio_accion(id_portafolio, id_accion, nueva_cantidad)
+            if portafolio_accion["cantidad"] == 0:
+                self.portafolio_dao.eliminar_portafolio_accion(id_portafolio, id_accion)
+            else:
+                self.portafolio_dao.actualizar_portafolio_accion(id_portafolio, id_accion, nueva_cantidad, precio_promedio)
         else:
-            self.portafolio_dao.insertar_portafolio_accion(id_portafolio, id_accion, cantidad)
+            self.portafolio_dao.insertar_portafolio_accion(id_portafolio, id_accion, cantidad, operacion["precio"])
 
 
-    def _calcular_costo_promedio(self, id_portafolio, id_accion):
-        operaciones = self.operacion_dao.obtener_operaciones_accion(id_portafolio, id_accion)
+    def _calcular_costo_promedio(self, id_portafolio, id_accion, fecha_desde):
+        operaciones = self.operacion_dao.obtener_operaciones_accion(id_portafolio, id_accion, fecha_desde)
         total_costo = sum(op['precio'] * op['cantidad'] for op in operaciones if op['id_tipo'] == 1)
         total_cantidad = sum(op['cantidad'] for op in operaciones if op['id_tipo'] == 1)
         return total_costo / total_cantidad if total_cantidad > 0 else 0

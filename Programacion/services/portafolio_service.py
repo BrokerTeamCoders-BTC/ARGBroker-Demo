@@ -17,7 +17,7 @@ class PortafolioService:
         for activo in activos:
 
             cantidad = activo['cantidad']
-            precio_compra = activo['precio_compra']
+            precio_compra = activo['precio_promedio']
             precio_actual = activo['precio_venta']  # Asumimos que el precio de venta es el precio actual
             valor_total = cantidad * precio_actual
             costo_total = cantidad * precio_compra
